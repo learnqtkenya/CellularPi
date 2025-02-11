@@ -1,4 +1,4 @@
-set(MODULE_NAME Modem)
+set(MODULE_NAME REST)
 set(LIB_NAME ${MODULE_NAME}Lib)
 
 qt_add_library(${LIB_NAME} STATIC)
@@ -6,16 +6,14 @@ qt_add_library(${LIB_NAME} STATIC)
 set_target_properties(${LIB_NAME} PROPERTIES AUTOMOC ON)
 
 target_link_libraries(${LIB_NAME} PRIVATE
-    Qt6::DBus
-    Qt6::Concurrent
+    Qt6::Network
 )
 
 list(APPEND MODULE_QML_FILES
 
 )
 list(APPEND MODULE_SOURCE_FILES
-    modem.h modem.cpp
-    modemdbusmanager.h modemdbusmanager.cpp
+    restclient.h restclient.cpp
 )
 
 qt_add_qml_module(${LIB_NAME}

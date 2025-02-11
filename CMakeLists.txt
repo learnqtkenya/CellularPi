@@ -22,10 +22,10 @@ list(APPEND PROJECT_QT_LIBS
         Quick
         DBus
         Concurrent
-        SerialPort
+        Network
 )
 
-find_package(Qt6 6.4 REQUIRED COMPONENTS ${PROJECT_QT_LIBS})
+find_package(Qt6 6.7 REQUIRED COMPONENTS ${PROJECT_QT_LIBS})
 set(APP_TARGET appCellularPi)
 
 qt_standard_project_setup()
@@ -36,10 +36,12 @@ qt_add_executable(${APP_TARGET}
 
 add_subdirectory(Modem)
 add_subdirectory(Qml)
+add_subdirectory(REST)
 
 list(APPEND PROJECT_MODULE_LIBS
         ModemLibplugin
         QmlLibplugin
+        RESTLibplugin
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
