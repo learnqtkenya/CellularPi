@@ -8,9 +8,9 @@ A modern Qt6-based cellular modem testing interface with SMS capabilities and RE
 
 ## Blogs
 
-1. [Cellular Pi: part 1]()
-2. [Cellular Pi: par 2]()
-3. [Cellular Pi: part 3]()
+1. [The Implementation Chronicles: A7670E USB Modem: Part 1](https://squared.co.ke/blog/cellular-connectivity-with-raspberry-pi-4b)
+2. [Driver Support for A7670E: Kernel Module Implementation: Part 2](https://squared.co.ke/blog/driver-support-for-a7670e)
+3. [Testing A7670E Modem Features with CellularPi: Part 3](https://squared.co.ke/blog/testing-cellular-connectivity-on-pi4b)
 
 ## Features
 
@@ -29,13 +29,6 @@ A modern Qt6-based cellular modem testing interface with SMS capabilities and RE
 - SSL/TLS support
 - Built-in demo API integration
 
-### User Interface
-- Modern, responsive design
-- Universal theme support
-- Dynamic scaling for different screen sizes
-- Tabbed interface for organized functionality
-- Real-time status updates
-
 ## Requirements
 
 ### System Requirements
@@ -51,10 +44,6 @@ A modern Qt6-based cellular modem testing interface with SMS capabilities and RE
 - Qt Network
 - Qt DBus
 - Qt Concurrent
-
-## Cross compilation
-
-Refer to this project([QTonRaspberryPi](https://github.com/learnqtkenya/QTonRaspberryPi))for cross-compiling this project for pi.
 
 ## Project Structure
 
@@ -73,6 +62,80 @@ CellularPi/
 │   └── Main.qml              # Main application window
 └── README.md
 ```
+
+## Cross-Compilation
+
+### Option 1: Native Development on Raspberry Pi
+
+Follow the comprehensive setup guide at [QTonRaspberryPi](https://github.com/learnqtkenya/QTonRaspberryPi) to properly configure your Raspberry Pi for Qt development. This includes:
+- Installing required packages
+- Setting up Qt development tools
+- Configuring the build environment
+
+### Option 2: Cross-compilation for ARM64 (Recommended)
+
+For faster development and build times, we recommend using cross-compilation. Here's how to set it up:
+
+1. Clone the development environment repository:
+```bash
+git clone https://github.com/learnqtkenya/QTonRaspberryPi.git
+cd QTonRaspberryPi
+```
+
+2. Clone CellularPi into the project directory:
+```bash
+rm -rf project && git clone https://github.com/learnqtkenya/CellularPi.git project
+```
+
+3. Create a build script (build.sh):
+```bash
+#!/bin/bash
+
+# Function to run a command and print a warning if it fails
+run_command() {
+    "$@"
+    if [ $? -ne 0 ]; then
+        echo "Warning: Command failed: $@"
+    fi
+}
+
+# Run each command using the run_command function
+run_command rm -rf appCellularPi
+run_command docker rm tmpbuild
+run_command docker build -t qtcrossbuild . 
+run_command docker create --name tmpbuild qtcrossbuild
+run_command docker cp tmpbuild:/build/project/appCellularPi ./appCellularPi
+echo "Build script completed."
+```
+
+4. Make the script executable and run it:
+```bash
+chmod +x build.sh
+./build.sh
+```
+
+This will create a Docker container with the necessary cross-compilation environment, build CellularPi, and copy the resulting binary to your host machine.
+
+5. Deploy to Raspberry Pi:
+```bash
+scp appCellularPi pi@raspberrypi:/home/pi/
+```
+
+### Build Verification
+
+After deploying to the Raspberry Pi, verify the build:
+```bash
+# On the Raspberry Pi
+chmod +x appCellularPi
+./appCellularPi --version
+```
+
+### User Interface
+- Modern, responsive design
+- Universal theme support
+- Dynamic scaling for different screen sizes
+- Tabbed interface for organized functionality
+- Real-time status updates
 
 ## Usage
 
