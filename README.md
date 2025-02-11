@@ -127,7 +127,7 @@ After deploying to the Raspberry Pi, verify the build:
 ```bash
 # On the Raspberry Pi
 chmod +x appCellularPi
-./appCellularPi --version
+./appCellularPi 
 ```
 
 ### User Interface
